@@ -15,7 +15,7 @@
     @yield('body')
 
     <div style="margin-top:40px">
-        Helpdesk by <a href="https://cannerald.com"><img src="https://helpdesk.cannerald.com/images/handesk_full.png" height="30" align="center"></a>
+        Helpdesk by <a href="https://cannerald.com">Cannerald</a>
     </div>
 
 </body>

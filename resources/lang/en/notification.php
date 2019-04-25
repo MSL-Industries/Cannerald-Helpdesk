@@ -3,7 +3,7 @@
 return [
     'newLeadCreatedDesc' => 'A new lead has been created',
     'leadAssigned'       => 'Lead assigned',
-    'newTicketCreated'   => 'New ticket created',
+    'newTicketCreated'   => 'New ticket created at Cannerald Support-Center',
     'newTicket'          => 'New ticket',
     'ticketCreated'      => 'Ticket created',
     'ticketAssigned'     => 'Ticket assigned',
