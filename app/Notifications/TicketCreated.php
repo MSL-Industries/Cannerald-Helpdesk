@@ -53,7 +53,7 @@ class TicketCreated extends Notification implements ShouldQueue
                 ]
             );
         if ($this->ticket->requester->email) {
-            $mail->from($this->ticket->requester->email, $this->ticket->requester->name);
+            //$mail->from($this->ticket->requester->email, $this->ticket->requester->name);
         }
 
         return $mail;
