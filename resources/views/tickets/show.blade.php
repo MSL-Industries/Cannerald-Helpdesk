@@ -20,7 +20,7 @@
         @include('components.assignActions', ["endpoint" => "tickets", "object" => $ticket])
         <div class="comment new-comment">
             {{ Form::open(["url" => route("comments.store", $ticket) , "files" => true, "id" => "comment-form"]) }}
-            <textarea id="comment-text-area" name="body">@if(auth()->user()->settings->tickets_signature)&#13;&#13;{{ auth()->user()->settings->tickets_signature }}@endif</textarea>
+            <textarea id="comment-text-area" name="body" style="height:200px; width: 100%; resize: vertical;">@if(auth()->user()->settings->tickets_signature)&#13;&#13;{{ auth()->user()->settings->tickets_signature }}@endif</textarea>
             @include('components.uploadAttachment', ["attachable" => $ticket, "type" => "tickets"])
             {{ Form::hidden('new_status', $ticket->status, ["id" => "new_status"]) }}
             @if($ticket->isEscalated() )

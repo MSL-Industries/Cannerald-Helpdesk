@@ -18,6 +18,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\TicketCommented' => [
             'App\Listeners\UpdateReplyKpis',
+            'App\Listeners\SendChatMessage',
         ],
         'App\Events\TicketStatusUpdated' => [
             'App\Listeners\UpdateStatusKpis',
