@@ -2,28 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Authenticatable\Admin;
 use App\Idea;
 use App\TicketEvent;
-use App\Authenticatable\Admin;
 
 class WebhookController extends Controller
 {
     public function store()
     {
-        //dd(request()->all());
-        $issueId    = request('issue')['id'];
-        $repository = request('repository')['full_name'];
-        $newStatus  = request('issue')['state'];
+        $issueId         = request('issue')['id'];
+        $repository      = request('repository')['full_name'];
+        $newStatus       = request('issue')['state'];
+        $comment         = request('comment')['content']['raw'];
+        $userDisplayName = request('comment')['user']['display_name'] ?? 'Unknown';
 
-        $result = $this->findAndUpdateIdeas($issueId, $repository, $newStatus);
+        if (! $issueId) {
+            $payload         = json_decode(request()->getContent());
+            if (! $payload) {
+                return response('ok');
+            }
+            $issueId         = $payload->issue->id;
+            $repository      = $payload->repository->full_name;
+            $newStatus       = $payload->issue->state;
+            $comment         = $payload->comment->content->raw;
+            $userDisplayName = $payload->comment->user->display_name ?? 'Unknown';
+//            dd($issueId, $repository, $newStatus, $comment);
+        }
+
+        $result = $this->findAndUpdateIdeas($issueId, $repository, $newStatus, "{$comment} (by {$userDisplayName})");
         if ($result) {
             return $result;
         }
 
-        return $this->findAndUpdateTickets($issueId, $repository, $newStatus);
+        return $this->findAndUpdateTickets($issueId, $repository, $newStatus, $comment);
     }
 
-    private function findAndUpdateTickets($issue_id, $repository, $newStatus)
+    private function findAndUpdateTickets($issue_id, $repository, $newStatus, $comment)
     {
         $ticketEvent = TicketEvent::where('body', "Issue created #{$issue_id} at {$repository}")->first();
         if (! $ticketEvent) {
@@ -32,12 +46,12 @@ class WebhookController extends Controller
             return response()->json('ok: no ticket with this issue');
         }
         \Log::info("Issue updated: Adding note to ticket {$ticketEvent->ticket->id}");
-        $ticketEvent->ticket->addNote(Admin::first(), "Issue status updated to {$newStatus}");
+        $ticketEvent->ticket->addNote(Admin::first(), "Issue status updated to {$newStatus}: {$comment}");
 
         return response()->json("ok: Ticket {$ticketEvent->ticket->id} updated");
     }
 
-    private function findAndUpdateIdeas($issue_id, $repository, $newStatus)
+    private function findAndUpdateIdeas($issue_id, $repository, $newStatus, $comment)
     {
         $idea = Idea::where('issue_id', $issue_id)->where('repository', 'like', "%{$repository}%")->first();
         if (! $idea) {

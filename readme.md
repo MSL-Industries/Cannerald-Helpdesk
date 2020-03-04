@@ -6,7 +6,7 @@ have multiple teams, with multiple users, easy and efficient reporting by all/te
 
 [Landing page: http://handesk.io](http://handesk.io)
 
-Check out the screenshots to see how nice it looks, and feel fee to contribute by sending us PRs.
+Check out the screenshots to see how nice it looks, and feel free to contribute by sending us PRs.
 We will keep adding features as we need them, but our basic workflow is totally covered :D
 
 ## Features
@@ -126,7 +126,7 @@ And you can join with the following [invitation](https://handesk.slack.com/share
 
 Join in with the following link
 
-[Join handesk slack](https://join.slack.com/t/handesk/shared_invite/enQtMzg4MzE4ODcwNzg2LWM5ODU5NDNlNGNkYmM0NzY5NGRlZjRkZDhjZmI2NTQ3NjY3Y2RkZjI1NTgwMzJiMzAzNTcxNDFmYzE5ZjQxNTY)
+[Join handesk slack](https://join.slack.com/t/handesk/shared_invite/enQtMzg4MzE4ODcwNzg2LTlmZTk4NGRjZDA5N2ExYTI2ZDhhNzAyOThmMDM1YjgwZTMzZTQ5ZjkxNDVlNzIwY2ZkZWExN2U2NDUwNWFiOWU)
 
 ## Development
 We try to follow a TDD approach as well as some mixed functional CSS for the frontend.   
@@ -136,4 +136,4 @@ We try to follow a TDD approach as well as some mixed functional CSS for the fro
 ## License
 Handesk is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT). 
 
-Special thanks to [Jetbrians](https://www.jetbrains.com) for their support to open source projects!
+Special thanks to [Jetbrains](https://www.jetbrains.com) for their support to open source projects!

@@ -3,8 +3,8 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class RateTicket extends Notification
 {
@@ -18,6 +18,9 @@ class RateTicket extends Notification
 
     public function via($notifiable)
     {
+        if (method_exists($notifiable, 'shouldBeNotified') && !$notifiable->shouldBeNotified() ){
+            return [];
+        }
         return ['mail'];
     }
 

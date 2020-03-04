@@ -2,8 +2,8 @@
 
 namespace App\Authenticatable;
 
-use ReflectionClass;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 trait HasParentModel
 {
@@ -28,7 +28,7 @@ trait HasParentModel
         return Str::snake(class_basename($this->getParentClass())).'_'.$this->primaryKey;
     }
 
-    public function joiningTable($related)
+    public function joiningTable($related, $INSTANCE = null)
     {
         $models = [
             Str::snake(class_basename($related)),

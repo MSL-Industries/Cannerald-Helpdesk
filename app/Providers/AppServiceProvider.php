@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Services\IssueCreator;
-use Illuminate\Support\Facades\Hash;
 use App\Services\Bitbucket\Bitbucket;
+use App\Services\IssueCreator;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,16 +28,6 @@ class AppServiceProvider extends ServiceProvider
         Validator::replacer('old_password', function ($message, $attribute, $rule, $parameters) {
             return __('passwords.change_error');
         });
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        app()->bind(IssueCreator::class, Bitbucket::class);
 
         Blade::directive('icon', function ($icon) {
             return icon($icon);
@@ -56,5 +46,15 @@ class AppServiceProvider extends ServiceProvider
                     echo {$data}->appends(array_except(request()->query(),['page']))->links();
                 } ?>";
         });
+    }
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        app()->bind(IssueCreator::class, Bitbucket::class);
     }
 }

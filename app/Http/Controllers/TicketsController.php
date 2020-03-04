@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Ticket;
 use App\Repositories\TicketsIndexQuery;
 use App\Repositories\TicketsRepository;
+use App\Ticket;
 use BadChoice\Thrust\Controllers\ThrustController;
 
 class TicketsController extends Controller
@@ -65,9 +65,12 @@ class TicketsController extends Controller
             'requester' => 'required|array',
             'priority'  => 'required|integer',
             'type'      => 'integer',
+            //'subject'   => 'string|nullable',
+            //'summary'   => 'string'
             //'title'      => 'required|min:3',
         ]);
-        $ticket->updateWith(request('requester'), request('priority'), request('type'));
+        $ticket->updateWith(request('requester'), request('priority'), request('type'))
+                ->updateSummary(request('subject'), request('summary'));
 
         return back();
     }

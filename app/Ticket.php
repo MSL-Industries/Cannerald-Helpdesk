@@ -2,19 +2,19 @@
 
 namespace App;
 
-use Carbon\Carbon;
 use App\Authenticatable\Admin;
-use App\Services\IssueCreator;
-use App\Events\TicketCommented;
-use App\Notifications\RateTicket;
 use App\Authenticatable\Assistant;
+use App\Events\TicketCommented;
 use App\Events\TicketStatusUpdated;
-use Illuminate\Support\Facades\App;
-use App\Notifications\TicketCreated;
+use App\Notifications\RateTicket;
 use App\Notifications\TicketAssigned;
+use App\Notifications\TicketCreated;
 use App\Notifications\TicketEscalated;
+use App\Services\IssueCreator;
 use App\Services\TicketLanguageDetector;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\App;
 
 class Ticket extends BaseModel
 {
@@ -42,9 +42,11 @@ class Ticket extends BaseModel
             'public_token' => str_random(24),
             'team_id'      => Settings::defaultTeamId(),
         ])->attachTags($tags);
-        tap(new TicketCreated($ticket), function ($newTicketNotification) use ($requester) {
+        tap(new TicketCreated($ticket), function ($newTicketNotification) use ($requester, $ticket) {
             Admin::notifyAll($newTicketNotification);
-            $requester->notify($newTicketNotification);
+            if ($ticket->team) {
+                $ticket->team->notify($newTicketNotification);
+            }
         });
 
         return $ticket;
@@ -58,6 +60,13 @@ class Ticket extends BaseModel
             'requester_id'   => $requester->id,
             'ticket_type_id' => $ticket_type_id,
         ]);
+
+        return $this;
+    }
+
+    public function updateSummary($subject, $summary)
+    {
+        $this->update(['subject' => $subject, 'summary' => $summary]);
 
         return $this;
     }
@@ -311,12 +320,12 @@ class Ticket extends BaseModel
         $issue = $issueCreator->createIssue(
                 $repo[0],
                 $repo[1],
-                $this->title,
-                'Issue from ticket: '.route('tickets.show', $this)."   \n\r".$this->body
+                $this->subject ?? $this->title,
+                'Issue from ticket: '.route('tickets.show', $this)."   \n\r".($this->summary ?? $this->body)
         );
-        $issueUrl = "https://bitbucket.org/{$repository}/issues/{$issue->local_id}";
-        $this->addNote(auth()->user(), "Issue created {$issueUrl} with id #{$issue->local_id}");
-        TicketEvent::make($this, "Issue created #{$issue->local_id} at {$repository}");
+        $issueUrl = "https://bitbucket.org/{$repository}/issues/{$issue->id}";
+        $this->addNote(auth()->user(), "Issue created {$issueUrl} with id #{$issue->id}");
+        TicketEvent::make($this, "Issue created #{$issue->id} at {$repository}");
 
         return $issue;
     }

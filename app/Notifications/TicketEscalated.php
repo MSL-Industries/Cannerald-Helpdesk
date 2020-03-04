@@ -3,9 +3,9 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class TicketEscalated extends Notification implements ShouldQueue
 {
@@ -27,7 +27,7 @@ class TicketEscalated extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        if (isset($notifiable->settings) && $notifiable->settings->ticket_assigned_notification == false) {
+        if (isset($notifiable->settings) && $notifiable->settings->escalated_ticket_notification == false) {
             return [];
         }
 

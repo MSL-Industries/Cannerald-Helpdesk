@@ -2,12 +2,12 @@
 
 namespace App\Notifications;
 
-use App\User;
 use App\Requester;
+use App\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class NewComment extends Notification implements ShouldQueue
 {
@@ -34,7 +34,9 @@ class NewComment extends Notification implements ShouldQueue
         if (isset($notifiable->settings) && $notifiable->settings->ticket_updated_notification == false) {
             return [];
         }
-
+        if (method_exists($notifiable, 'shouldBeNotified') && !$notifiable->shouldBeNotified() ){
+            return [];
+        }
         return (method_exists($notifiable, 'routeNotificationForSlack') && $notifiable->routeNotificationForSlack() != null) ? ['slack'] : ['mail'];
     }
 
