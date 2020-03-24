@@ -22,7 +22,7 @@ use BadChoice\Thrust\Resource;
 class Ticket extends Resource
 {
     public static $model        = \App\Ticket::class;
-    public static $search       = ['title', 'body'];
+    public static $search       = ['title', 'body', 'requester.name', 'requester.email'];
     public static $defaultSort  = 'updated_at';
     public static $defaultOrder = 'desc';
 
