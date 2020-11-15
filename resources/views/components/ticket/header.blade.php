@@ -27,11 +27,10 @@
     <div class="user-infos">
         <a target="_blank" href="{{ env('APP_ADMIN_PAGE') }}users/{{ $user->id  }}">Open</a>
         <span>Verification Level: {{ $user->verification_level }}</span>
-        <span>Plants: {{ $user->plants }}</span>
+        <span>Plants: {{ $user->plants->level_1 }}/{{ $user->plants->level_2 }}/{{ $user->plants->level_3 }}</span>
         <span>Angemeldet seit: {{ $user->created_at }}</span>
         <span>Firstliner: {{ $user->firstline }}</span>
         <span>Language: {{ $user->language }}</span>
-        <span>Plants: {{ $user->plants }}</span>
     </div>
 
 
