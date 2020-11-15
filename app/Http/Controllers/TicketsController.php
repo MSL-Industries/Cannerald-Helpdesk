@@ -6,6 +6,7 @@ use App\Repositories\TicketsIndexQuery;
 use App\Repositories\TicketsRepository;
 use App\Ticket;
 use BadChoice\Thrust\Controllers\ThrustController;
+use GuzzleHttp\Client;
 
 class TicketsController extends Controller
 {
@@ -26,7 +27,30 @@ class TicketsController extends Controller
     {
         $this->authorize('view', $ticket);
 
-        return view('tickets.show', ['ticket' => $ticket]);
+        try {
+            $client = new Client();
+
+            $options = [
+                'form_params' => [
+                    'api_key' => env('API_TOKEN'),
+                    'email' => $ticket->getSubscribableEmail()
+                ]
+            ];
+
+            $options['headers'] = [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded'
+            ];
+
+            $response = $client->request('post', env('APP_AUTH_ENDPOINT') . 'support/user-info', $options);
+
+
+            $user = json_decode($response->getBody());
+        } catch (\Exception $e) {
+            $user = null;
+        }
+
+        return view('tickets.show', ['ticket' => $ticket, 'user' => $user]);
     }
 
     public function create()
@@ -38,9 +62,9 @@ class TicketsController extends Controller
     {
         $this->validate(request(), [
             'requester' => 'required|array',
-            'title'     => 'required|min:3',
-            'body'      => 'required',
-            'team_id'   => 'nullable|exists:teams,id',
+            'title' => 'required|min:3',
+            'body' => 'required',
+            'team_id' => 'nullable|exists:teams,id',
         ]);
         $ticket = Ticket::createAndNotify(request('requester'), request('title'), request('body'), request('tags'));
         $ticket->updateStatus(request('status'));
@@ -63,14 +87,14 @@ class TicketsController extends Controller
     {
         $this->validate(request(), [
             'requester' => 'required|array',
-            'priority'  => 'required|integer',
-            'type'      => 'integer',
+            'priority' => 'required|integer',
+            'type' => 'integer',
             //'subject'   => 'string|nullable',
             //'summary'   => 'string'
             //'title'      => 'required|min:3',
         ]);
         $ticket->updateWith(request('requester'), request('priority'), request('type'))
-                ->updateSummary(request('subject'), request('summary'));
+            ->updateSummary(request('subject'), request('summary'));
 
         return back();
     }

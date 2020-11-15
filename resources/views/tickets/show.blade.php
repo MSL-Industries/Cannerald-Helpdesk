@@ -20,7 +20,14 @@
         @include('components.assignActions', ["endpoint" => "tickets", "object" => $ticket])
         <div class="comment new-comment">
             {{ Form::open(["url" => route("comments.store", $ticket) , "files" => true, "id" => "comment-form"]) }}
-            <textarea id="comment-text-area" name="body" style="height:200px; width: 100%; resize: vertical;">Hello {{$ticket->requester->name}},&#13;@if(auth()->user()->settings->tickets_signature)&#13;&#13;{{ auth()->user()->settings->tickets_signature }}@endif</textarea>
+
+
+            @if($user)
+                <textarea id="comment-text-area" name="body" style="height:200px; width: 100%; resize: vertical;">{{ $user->language == 'de' ? 'Hallo' : 'Hello' }} {{ $user->firstname }},&#13;@if(auth()->user()->settings->tickets_signature)&#13;&#13;{{ auth()->user()->settings->tickets_signature }}@endif</textarea>
+            @else
+                <textarea id="comment-text-area" name="body" style="height:200px; width: 100%; resize: vertical;">Hello {{$ticket->requester->name}},&#13;@if(auth()->user()->settings->tickets_signature)&#13;&#13;{{ auth()->user()->settings->tickets_signature }}@endif</textarea>
+            @endif
+
             @include('components.uploadAttachment', ["attachable" => $ticket, "type" => "tickets"])
             {{ Form::hidden('new_status', $ticket->status, ["id" => "new_status"]) }}
             @if($ticket->isEscalated() )
@@ -32,9 +39,12 @@
                 <button class="mt1 uppercase ph3"> @icon(comment) {{ __('ticket.commentAs') }} {{ $ticket->statusName() }}</button>
                 <span class="dropdown button caret-down"> @icon(caret-down) </span>
                 <ul class="dropdown-container">
-                    <li><a class="pointer" onClick="setStatusAndSubmit( {{ App\Ticket::STATUS_OPEN    }} )"><div style="width:10px; height:10px" class="circle inline ticket-status-open mr1"></div> {{ __('ticket.commentAs') }} <b>{{ __("ticket.open") }}   </b> </a></li>
-                    <li><a class="pointer" onClick="setStatusAndSubmit( {{ App\Ticket::STATUS_PENDING }} )"><div style="width:10px; height:10px" class="circle inline ticket-status-pending mr1"></div> {{ __('ticket.commentAs') }} <b>{{ __("ticket.pending") }}</b> </a></li>
-                    <li><a class="pointer" onClick="setStatusAndSubmit( {{ App\Ticket::STATUS_SOLVED  }} )"><div style="width:10px; height:10px" class="circle inline ticket-status-solved mr1"></div> {{ __('ticket.commentAs') }} <b>{{ __("ticket.solved") }} </b> </a></li>
+                    <li><a class="pointer" onClick="setStatusAndSubmit( {{ App\Ticket::STATUS_OPEN    }} )">
+                            <div style="width:10px; height:10px" class="circle inline ticket-status-open mr1"></div> {{ __('ticket.commentAs') }} <b>{{ __("ticket.open") }}   </b> </a></li>
+                    <li><a class="pointer" onClick="setStatusAndSubmit( {{ App\Ticket::STATUS_PENDING }} )">
+                            <div style="width:10px; height:10px" class="circle inline ticket-status-pending mr1"></div> {{ __('ticket.commentAs') }} <b>{{ __("ticket.pending") }}</b> </a></li>
+                    <li><a class="pointer" onClick="setStatusAndSubmit( {{ App\Ticket::STATUS_SOLVED  }} )">
+                            <div style="width:10px; height:10px" class="circle inline ticket-status-solved mr1"></div> {{ __('ticket.commentAs') }} <b>{{ __("ticket.solved") }} </b> </a></li>
                 </ul>
             @endif
             {{ Form::close() }}
@@ -49,10 +59,11 @@
     @include('components.js.taggableInput', ["el" => "tags", "endpoint" => "tickets", "object" => $ticket])
 
     <script>
-        function setStatusAndSubmit(new_status){
+        function setStatusAndSubmit(new_status) {
             $("#new_status").val(new_status);
             $("#comment-form").submit();
         }
+
         $("#comment-text-area").mention({
             delimiter: '@',
             emptyQuery: true,

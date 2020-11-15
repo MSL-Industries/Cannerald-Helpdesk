@@ -10,7 +10,32 @@
     </div>
     {{--<a class="ml4" title="Public Link" href="{{route('requester.tickets.show',$ticket->public_token)}}"> @icon(globe) </a>--}}
 
-    <a class="button secondary" target="_blank" href="{{ env('APP_ADMIN_PAGE') }}users?__search__={{ $ticket->requester->email }}">Open user</a>
+    @if($user)
+
+
+    <style>
+        .user-infos > * {
+            border: 1px solid black;
+            color: black;
+            padding: 2px;
+        }
+        .user-infos > a {
+            border: 1px solid gray;
+        }
+    </style>
+
+    <div class="user-infos">
+        <a target="_blank" href="{{ env('APP_ADMIN_PAGE') }}users/{{ $user->id  }}">Open</a>
+        <span>Verification Level: {{ $user->verification_level }}</span>
+        <span>Plants: {{ $user->plants }}</span>
+        <span>Angemeldet seit: {{ $user->created_at }}</span>
+        <span>Firstliner: {{ $user->firstline }}</span>
+        <span>Language: {{ $user->language }}</span>
+        <span>Plants: {{ $user->plants }}</span>
+    </div>
+
+
+    @endif
 
 </div>
 <div id="ticket-edit" class="hidden" class="">
