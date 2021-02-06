@@ -1984,7 +1984,7 @@ a {
 .content {
   padding-top: 24px;
   margin-left: 300px;
-  overflow: auto;
+  overflow: inherit !important;
 }
 .comment {
   padding-left: 24px;
