@@ -10,6 +10,6 @@ class AttachmentsController extends Controller
 {
     public function show($filename)
     {
-        return Storage::download("attachments/{$filename}");
+        return response()->file(Storage::path("public/attachments/{$filename}"));
     }
 }
