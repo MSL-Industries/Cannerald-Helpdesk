@@ -31,3 +31,12 @@ $(".delete-resource, .delete-resource-simple").on('click',function(e){
         $('<form action="' + url + '" method="POST"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' + csrf_token + '"></form>').appendTo('body').submit();
     }
 });
+
+$(function() {
+    var params = new window.URLSearchParams(window.location.search);
+    if (params.get('filters')) {
+        localStorage.setItem('filters', params.get('filters'));
+    } else if(window.location.toString().endsWith('tickets') && localStorage.getItem('filters') !== null) {
+        location.href = window.location + '?filters=' + localStorage.getItem('filters');
+    }
+});
