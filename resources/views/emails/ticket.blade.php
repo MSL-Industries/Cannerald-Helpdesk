@@ -23,7 +23,7 @@
         </div>
 
         <div style="margin-top:40px">
-            Add a comment by replying to this email
+            {{__('notification.answerTicket')}} <a href="{{$url}}">{{__('notification.answerTicketLink')}}</a>
         </div>
 
         <span style="color:white">ticket-id:{{$ticket->id}}.</span>
