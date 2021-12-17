@@ -6,6 +6,7 @@ use App\Notifications\TicketCreated;
 use App\Requester;
 use App\Settings;
 use App\Ticket;
+use App\TicketType;
 use Illuminate\Http\Response;
 
 class TicketsController extends ApiController
@@ -36,12 +37,19 @@ class TicketsController extends ApiController
             'title'     => 'required|min:3',
         ]);
 
+        /** @var Ticket $ticket */
         $ticket = Ticket::createAndNotify(
             request('requester'),
             strip_tags(request('title')),
             strip_tags(request('body')),
             request('tags')
         );
+
+        $type = TicketType::whereIn('name', request('tags'))->first();
+        if ($type) {
+            $ticket->type()->associate($type);
+            $ticket->save();
+        }
 
         if (request('team_id')) {
             $ticket->assignToTeam(request('team_id'));
