@@ -1,5 +1,12 @@
 <h4> @icon(inbox) {{ trans_choice('ticket.ticket', 2) }}</h4>
 <ul>
+    <li style="height: auto; max-height: none; display: list-item; margin-bottom: 20px;">
+        @foreach (\App\TicketType::all() as $ticketType)
+                <a style="display: inline-block" class="p1" href="/tickets?filters={{ base64_encode('App\ThrustHelpers\Filters\TicketTypeFilter=' . $ticketType->id) }}">
+                    <span class="label" style="padding-right: 0; color: black;background-color:{{ $ticketType->color }}">{{$ticketType->name}} <span class="label" style="margin-right: 0">{{$ticketType->tickets()->count()}}</span></span>
+                </a>
+        @endforeach
+    </li>
 
     @php ( $repository = new App\Repositories\TicketsRepository )
     @if( auth()->user()->assistant )
