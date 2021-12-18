@@ -48,8 +48,10 @@ class TicketsController extends ApiController
         $type = TicketType::whereIn('name', request('tags'))->first();
         if ($type) {
             $ticket->type()->associate($type);
-            $ticket->save();
+        } else {
+            $ticket->type()->associate(TicketType::where('name', 'unassigned ')->first());
         }
+        $ticket->save();
 
         if (request('team_id')) {
             $ticket->assignToTeam(request('team_id'));
