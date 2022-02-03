@@ -46,7 +46,7 @@ class TicketsController extends ApiController
         );
 
         //move to VIP if in list
-        if (in_array(request('requester'), explode(',',env('VIP', '')))) {
+        if (isset(request('requester')['email']) && in_array(request('requester')['email'], explode(',',env('VIP', '')))) {
             $type = TicketType::whereIn('name', 'VIP')->first();
         } else {
             $type = TicketType::whereIn('name', request('tags'))->first();
