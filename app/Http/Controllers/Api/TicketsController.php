@@ -45,12 +45,19 @@ class TicketsController extends ApiController
             request('tags')
         );
 
-        $type = TicketType::whereIn('name', request('tags'))->first();
+        //move to VIP if in list
+        if (in_array(request('requester'), explode(',',env('VIP', '')))) {
+            $type = TicketType::whereIn('name', 'VIP')->first();
+        } else {
+            $type = TicketType::whereIn('name', request('tags'))->first();
+        }
+
         if ($type) {
             $ticket->type()->associate($type);
         } else {
-            $ticket->type()->associate(TicketType::where('name', 'unassigned ')->first());
+            $ticket->type()->associate(TicketType::where('name', 'unassigned')->first());
         }
+
         $ticket->save();
 
         if (request('team_id')) {
