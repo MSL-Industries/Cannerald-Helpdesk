@@ -5,7 +5,7 @@
             <div class="comment @if($comment->private) note @endif">
                 <div class="date mb4">
                     <div class="float-left mr3">@include('components.gravatar',["user" => $comment->author()] )</div>
-                    <div class="pt1">{{ $comment->author()->name }} · {{ $comment->created_at->diffForHumans() }}</div>
+                    <div class="pt1">{{ $comment->author()->name }} · {{ $comment->created_at->diffForHumans() }} | {{ $ticket->created_at->format('Y-m-d H:i') }}</div>
                 </div>
                 <div>
                     @if($comment->private) @icon(sticky-note-o) @endif
@@ -19,7 +19,7 @@
     <div class="comment">
         <div class="date mb4">
             <div class="float-left mr3">@gravatar($ticket->requester->email) </div>
-            <div class="pt1">{{ $ticket->requester->name }} · {{ $ticket->created_at->diffForHumans() }}</div>
+            <div class="pt1">{{ $ticket->requester->name }} · {{ $ticket->created_at->diffForHumans() }} | {{ $ticket->created_at->format('Y-m-d H:i') }}</div>
         </div>
         <div>{!! nl2br( strip_tags($ticket->body)) !!} </div>
         @include('components.attachments', ["attachments" => $ticket->attachments])
