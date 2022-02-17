@@ -13,13 +13,6 @@ class CommentsController extends ApiController
     {
         App::setLocale(request('language'));
 
-        $ticketRequester = Requester::findOrFail($ticket->requester_id);
-        try {
-            Requester::validateTicketComment(request('requester'), $ticketRequester);
-        } catch (\Exception $e) {
-            return $this->respond(['id' => null, 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
-
         $comment = $ticket->addComment(null, strip_tags(request('body')), request('new_status'));
 
         if (request('new_status') == $ticket::STATUS_SOLVED) {
