@@ -16,6 +16,7 @@ class NewTicketEmailParser
 
         if (strpos(strtolower($message->subject), 'recovery') !== false) {
             $ticket->type()->associate(TicketType::where('name', 'recovery')->first());
+            $ticket->save();
         }
 
         return true;
