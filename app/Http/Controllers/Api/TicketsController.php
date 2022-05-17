@@ -16,10 +16,12 @@ class TicketsController extends ApiController
         $requester = Requester::whereName(request('requester'))->orWhere('email', '=', request('requester'))->firstOrFail();
         if (request('status') == 'solved') {
             $tickets = $requester->solvedTickets;
+        } else if (request('status') == 'open') {
+            $tickets = $requester->openTickets;
         } elseif (request('status') == 'closed') {
             $tickets = $requester->closedTickets;
         } else {
-            $tickets = $requester->openTickets;
+            $tickets = $requester->tickets;
         }
 
         return $this->respond($tickets);
