@@ -14,6 +14,7 @@ use App\Services\TicketLanguageDetector;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 
 class Ticket extends BaseModel
 {
@@ -35,23 +36,15 @@ class Ticket extends BaseModel
     public static function createAndNotify($requester, $title, $body, $tags)
     {
         $requester = Requester::findOrCreate($requester['name'] ?? 'Unknown', $requester['email'] ?? null);
-        try {
-            $ticket    = $requester->tickets()->create([
-                'title'        => substr($title, 0, 190),
-                'body'         => $body,
-                'public_token' => str_random(24),
-                'team_id'      => Settings::defaultTeamId(),
-            ])->attachTags($tags);
-        } catch (\Exception $exception) {
-            $ticket    = $requester->tickets()->create([
-                'title'        => substr($title, 0, 190),
-                'body'         => 'Invalid content, request Mail again!',
-                'public_token' => str_random(24),
-                'team_id'      => Settings::defaultTeamId(),
-            ])->attachTags($tags);
-        }
 
-        tap(new TicketCreated($ticket), function ($newTicketNotification) use ($requester, $ticket) {
+        $ticket    = $requester->tickets()->create([
+            'title'        => substr($title, 0, 190),
+            'body'         => $body,
+            'public_token' => Str::random(24),
+            'team_id'      => Settings::defaultTeamId(),
+        ])->attachTags($tags);
+        tap(new TicketCreated($ticket), function ($newTicketNotification) use ($ticket) {
+
             Admin::notifyAll($newTicketNotification);
             if ($ticket->team) {
                 $ticket->team->notify($newTicketNotification);
@@ -342,7 +335,7 @@ class Ticket extends BaseModel
     public function findIssueNote()
     {
         return $this->commentsAndNotes->first(function ($comment) {
-            return starts_with($comment->body, 'Issue created');
+            return Str::startsWith($comment->body, 'Issue created');
         });
     }
 
