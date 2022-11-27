@@ -4,38 +4,6 @@
     @busy <span class="label" style="background-color:{{$ticket->type->color ?? "white"}}"> {{ $ticket->type->name ?? "--" }}</span>
     <span class="date">{{  $ticket->created_at->diffForHumans() }} · {{  $ticket->requester->name }} &lt;{{$ticket->requester->email}}&gt;</span>
     <button class="ternary" onClick="$('#ticket-info').hide(); $('#ticket-edit').show()">@icon(pencil)</button>
-    <div class="mt2">
-        <span>{{ $ticket->subject }}</span><br>
-        <p>{{ $ticket->summary }}</p>
-    </div>
-    {{--<a class="ml4" title="Public Link" href="{{route('requester.tickets.show',$ticket->public_token)}}"> @icon(globe) </a>--}}
-
-    @if($user)
-
-
-    <style>
-        .user-infos > * {
-            border: 1px solid black;
-            color: black;
-            padding: 2px;
-        }
-        .user-infos > a {
-            border: 1px solid gray;
-        }
-    </style>
-
-    <div class="user-infos">
-        <a target="_blank" href="{{ env('APP_ADMIN_PAGE') }}users/{{ $user->id  }}">Open</a>
-        <span>Verification Level: {{ $user->verification_level }}</span>
-        <span>Plants: {{ $user->plants->level_1 }}/{{ $user->plants->level_2 }}/{{ $user->plants->level_3 }}</span>
-        <span>Angemeldet seit: {{ $user->created_at }}</span>
-        <span>Firstliner: {{ $user->firstline }}</span>
-        <span>Language: {{ $user->language }}</span>
-    </div>
-
-
-    @endif
-
 </div>
 <div id="ticket-edit" class="hidden" class="">
 {{ Form::open(["url" => route("tickets.update", $ticket) ,"method" => "PUT"]) }}
