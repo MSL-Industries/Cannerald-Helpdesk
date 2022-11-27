@@ -20,4 +20,8 @@
         <span>Firstliner: {{ $user->firstline }}</span>
         <span>Language: {{ $user->language }}</span>
     </div>
+@else
+    <div class="user-infos description">
+        Kein Benutzerkonto gefunden
+    </div>
 @endif
