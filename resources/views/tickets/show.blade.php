@@ -2,9 +2,6 @@
 @section('content')
     <div style="display: flex; width: 100%;">
         <div style="width: 60%">
-
-            @include('components.ticketComments', ["comments" => $ticket->commentsAndNotesAndEvents()->sortBy('created_at')->reverse() ])
-
             @if( $ticket->canBeEdited() )
 
                 <div class="comment new-comment">
@@ -52,6 +49,8 @@
                     {{ Form::close() }}
                 </div>
             @endif
+
+            @include('components.ticketComments', ["comments" => $ticket->commentsAndNotesAndEvents()->sortBy('created_at')->reverse() ])
 
         </div>
         <div style="width: 40%; border-left: solid 2px gray">
