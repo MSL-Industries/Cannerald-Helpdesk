@@ -13,7 +13,7 @@
     </style>
 
     <div class="user-infos description">
-        <a target="_blank" href="{{ env('APP_ADMIN_PAGE') }}users/{{ $user->id  }}">Open</a>
+        <a target="_blank" href="{{ env('APP_ADMIN_PAGE') }}user/{{ $user->id  }}/show">Open</a>
         <span>Verification Level: {{ $user->verification_level }}</span>
         <span>Plants: {{ $user->plants->level_1 }}/{{ $user->plants->level_2 }}/{{ $user->plants->level_3 }}</span>
         <span>Angemeldet seit: {{ $user->created_at }}</span>
