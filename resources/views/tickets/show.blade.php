@@ -7,17 +7,14 @@
                 <div class="comment new-comment">
                     {{ Form::open(["url" => route("comments.store", $ticket) , "files" => true, "id" => "comment-form"]) }}
 
-
                     @if($user)
-                        <textarea id="comment-text-area" name="body"
-                                  style="height:200px; width: 100%; resize: vertical;">{{ $user->language == 'de' ? 'Hallo' : 'Hello' }} {{ $user->firstname }},&#13;@if(auth()->user()->settings->tickets_signature)
-                                &#13;&#13;{{ auth()->user()->settings->tickets_signature }}
-                            @endif</textarea>
+                    <textarea id="comment-text-area" name="body"
+                              style="height:200px; width: 100%; resize: vertical;">{{ $user->language == 'de' ? 'Hallo' : 'Hello' }} {{ $user->firstname }},&#13;@if(auth()->user()->settings->tickets_signature)&#13;&#13;&#13;{{ auth()->user()->settings->tickets_signature }}@endif
+                    </textarea>
                     @else
-                        <textarea id="comment-text-area" name="body"
-                                  style="height:200px; width: 100%; resize: vertical;">Hello {{$ticket->requester->name}},&#13;@if(auth()->user()->settings->tickets_signature)
-                                &#13;&#13;{{ auth()->user()->settings->tickets_signature }}
-                            @endif</textarea>
+                    <textarea id="comment-text-area" name="body"
+                          style="height:200px; width: 100%; resize: vertical;">Hello {{$ticket->requester->name}},&#13;@if(auth()->user()->settings->tickets_signature)&#13;&#13;&#13;{{ auth()->user()->settings->tickets_signature }}@endif
+                    </textarea>
                     @endif
 
                     @include('components.uploadAttachment', ["attachable" => $ticket, "type" => "tickets"])
