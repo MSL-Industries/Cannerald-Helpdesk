@@ -3,7 +3,7 @@
 return [
     'newLeadCreatedDesc' => 'A new lead has been created',
     'leadAssigned'       => 'Lead assigned',
-    'newTicketCreated'   => 'New ticket created at Cannerald Support-Center',
+    'newTicketCreated'   => 'New ticket created at Support-Center',
     'newTicket'          => 'New ticket',
     'ticketCreated'      => 'Ticket created',
     'ticketAssigned'     => 'Ticket assigned',
@@ -17,5 +17,5 @@ return [
     'rateTicketDesc'     => 'We would love to get your feedback about this ticket, just click the rating so we can keep improving!',
     'ticketRated'        => 'Ticket rated',
     'answerTicket'       => 'Add a comment by replying to this email or',
-    'answerTicketLink'   => 'view the ticket in Handesk',
+    'answerTicketLink'   => 'view the ticket in Helpdesk',
 ];

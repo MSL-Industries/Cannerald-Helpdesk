@@ -15,7 +15,7 @@
     @yield('body')
 
     <div style="margin-top:40px">
-        Helpdesk by <a href="https://cannerald.com">Cannerald</a>
+        Helpdesk by <a href="{{ env('APP_FOOTER_LINK') }}">{{ env('APP_COMPANY_NAME') }}</a>
     </div>
 
 </body>
