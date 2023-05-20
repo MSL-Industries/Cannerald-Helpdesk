@@ -86,15 +86,5 @@
             $("#new_status").val(new_status);
             $("#comment-form").submit();
         }
-
-        $("#comment-text-area").mention({
-            delimiter: '@',
-            emptyQuery: true,
-            typeaheadOpts: {
-                items: 10 // Max number of items you want to show
-            },
-            users: {!! json_encode(App\Services\Mentions::arrayFor(auth()->user())) !!}
-        });
-
     </script>
 @endsection
