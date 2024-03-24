@@ -9,7 +9,7 @@
 
                     @if($user)
                     <textarea id="comment-text-area" name="body"
-                              style="height:200px; width: 100%; resize: vertical;">{{ $user->language == 'de' ? 'Hallo' : 'Hello' }} {{ $user->firstname }},&#13;@if(auth()->user()->settings->tickets_signature)&#13;&#13;&#13;{{ auth()->user()->settings->tickets_signature }}@endif
+                              style="height:200px; width: 100%; resize: vertical;">{{ $user->language == 'de' ? 'Hallo' : 'Hello' }} {{ $user->address->firstname }},&#13;@if(auth()->user()->settings->tickets_signature)&#13;&#13;&#13;{{ auth()->user()->settings->tickets_signature }}@endif
                     </textarea>
                     @else
                     <textarea id="comment-text-area" name="body"
