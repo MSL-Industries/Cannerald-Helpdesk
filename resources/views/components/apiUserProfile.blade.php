@@ -13,7 +13,8 @@
     </style>
 
     <div class="user-infos description">
-        <a target="_blank" href="{{ env('APP_ADMIN_PAGE') }}user/{{ $user->id  }}/show">Open</a>
+        <a target="_blank" href="{{ env('APP_ENDPOINT') }}/420house/user/{{ $user->id  }}/show">Open</a>
+        <a target="_blank" href="{{ env('APP_ENDPOINT') }}/backend/user/{{ $user->id  }}/show">Open (new Backend)</a>
 
         @if(isset($user->support->display))
             @foreach ($user->support->display as $label => $item)

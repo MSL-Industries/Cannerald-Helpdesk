@@ -42,7 +42,7 @@ class TicketsController extends Controller
                 'Content-Type' => 'application/x-www-form-urlencoded'
             ];
 
-            $response = $client->request('post', env('APP_AUTH_ENDPOINT') . 'support/user-info', $options);
+            $response = $client->request('post', env('APP_ENDPOINT') . 'api/support/user-info', $options);
 
 
             $user = json_decode($response->getBody());

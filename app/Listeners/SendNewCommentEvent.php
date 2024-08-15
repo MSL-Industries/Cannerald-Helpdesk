@@ -46,7 +46,7 @@ class SendNewCommentEvent
                     'Content-Type' => 'application/x-www-form-urlencoded'
                 ];
 
-                $client->request('post', env('APP_AUTH_ENDPOINT') . 'support/ticket/' . $event->ticket->id . '/comment-event', $options);
+                $client->request('post', env('APP_ENDPOINT') . 'api/support/ticket/' . $event->ticket->id . '/comment-event', $options);
             }
         } catch (\Exception $e) {
 
